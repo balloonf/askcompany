@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'catube',
     'rest',
+
 ]
 
 MIDDLEWARE = [

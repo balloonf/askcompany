@@ -24,6 +24,8 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('rest/', include('rest.urls')),
     path('catube/', include('catube.urls')),
+    #path('blog/', include('blog.urls')),
+
     path("", RedirectView.as_view(pattern_name="catube:video_list"), name="root"),
 ]
 

@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+<video controls class="w-100">
+    <source src="{{ blog.file.url }}" />
+</video>
+<h4>{{ blog.title }}</h4>
+
+작성자 : {{ blog.author.email|default:blog.author.username }}
+{{ blog.description|linebreaks }}
+
+조회수 : {{ blog.view_count }}
+
+{% if user == blog.author %}
+<a href="{% url 'catube:blog_update' blog.pk %}" class="btn btn-danger">수정</a>
+<a href="{% url 'catube:blog_delete' blog.pk %}" class="btn btn-outline-danger">삭제</a>
+{% endif %}
+
+댓글 ({{ blog.comment_set.all.count }})
+
+<form action="{% url 'catube:comment_create' blog.pk %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form comment_form layout="inline" %}
+    <input type="submit" value="저장" class="btn btn-danger" />
+</form>
+
+<div class="comment-list">
+    {% for comment in blog.comment_set.all %}
+    <div class="comment">
+        작성자: {{ comment.author }}, {{ comment.created_at|timesince }} 전,
+        {{ comment.content|linebreaks }}
+        {% if user == comment.author %}
+        <a href="{% url 'catube:comment_delete' blog.pk comment.pk %}" class="btn btn-outline-danger btn-sm">삭제</a>
+        {% endif %}
+    </div>
+
+    {% endfor %}
+</div>
+{% endblock %}

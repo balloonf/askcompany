@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="row">
+    {% for blog in blog_list %}
+    <div class="col-3 mb-3">
+        <div class="card">
+            <img src="{{ blog.photo.url }}" class="w-100" />
+            <div class="card-body">
+                <a href="{% url 'catube:blog_detail' blog.pk %}" class="text-dark">
+                    <strong>{{ blog.title }}</strong>
+                    <p class="small">
+                        {{ blog.description|truncatechars:30 }}
+                    </p>
+                    <p class="text-gray small">
+                        {{ blog.created_at|timesince }} 전,
+                        조회수 : {{ blog.view_count }}
+                    </p>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+{% bootstrap_pagination page_obj %}
+
+<hr />
+<a href="{% url 'catube:blog_create' %}">업로드</a>
+{% endblock %}
